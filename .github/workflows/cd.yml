@@ -1,0 +1,28 @@
+name: CD Pipeline
+
+on:
+  workflow_dispatch:
+    
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      
+       - name: Checkout code
+         uses: actions/checkout@v4 
+
+       - name: Setup Kubectl 
+         uses: azure/setup-kubectl@v3
+
+       - name: Setup Helm
+         uses: azure/setup-helm@v3
+
+       - name: Configure Kubeconfig
+         run: |
+           mkdir -p $HOME/ .kube
+           echo "${{secrets.KUBE_CONFIG}}" > $HOME/.kube/config
+
+       - name: Deploy using Helm
+         run: |
+           helm upgrade --install springboot springboot-chart 
