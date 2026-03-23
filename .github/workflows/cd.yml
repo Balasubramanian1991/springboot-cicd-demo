@@ -12,17 +12,12 @@ jobs:
        - name: Checkout code
          uses: actions/checkout@v4 
 
-       - name: Setup Kubectl 
-         uses: azure/setup-kubectl@v3
-
-       - name: Setup Helm
-         uses: azure/setup-helm@v3
-
-       - name: Configure Kubeconfig
-         run: |
-           mkdir -p $HOME/.kube
-           echo "${{secrets.KUBE_CONFIG}}" > $HOME/.kube/config
-
-       - name: Deploy using Helm
-         run: |
-           helm upgrade --install springboot springboot-chart 
+       - name: Deploy via SSH
+         uses: appleboy/checkout@v4
+         with: 
+           host: ${{ secrets.HOST }}
+           username: ${{ secrets.USERNAME }}
+           key: ${{ secrets.SSH_KEY }}
+           script: |
+             cd ~/springboot-cicd-demo
+             helm upgrade springboot springboot-chart
