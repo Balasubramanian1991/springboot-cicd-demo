@@ -13,7 +13,7 @@ jobs:
          uses: actions/checkout@v4 
 
        - name: Deploy via SSH
-         uses: appleboy/checkout@v4
+         uses: appleboy/checkout@v1.0.3
          with: 
            host: ${{ secrets.HOST }}
            username: ${{ secrets.USERNAME }}
